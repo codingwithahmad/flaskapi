@@ -26,3 +26,23 @@ def get_language(index):
         return {'language': languages[index]}
     except IndexError as e:
         return {}, 404
+
+
+@app.route('/<int:index>', methods=['PUT'])
+def modify_language(index):
+    arg = request.get_json()
+    if arg.get('name'):
+        try:
+            languages[index] = arg['name']
+            return {}, 204
+        except IndexError:
+            return {}, 404
+    return {}, 400
+
+@app.route('/<int:index>', methods=['DELETE'])
+def delete_language(index):
+    try:
+        del languages[index]
+        return {}, 204
+    except IndexError:
+        return {}, 404
